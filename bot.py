@@ -52,9 +52,9 @@ async def stop_command(message: types.Message):
 
 
 # /start
-@dp.message_handler(commands=["BSheepBot"], commands_prefix="@")
+@dp.message_handler(commands=["chemequation_bot", "start"], commands_prefix=["@", "/"])
 async def start_command(message: types.Message):
-    await message.answer("Привет")
+    await message.answer('Hello')
 
 
 # /help
@@ -63,10 +63,10 @@ async def start_command(message: types.Message):
     await message.answer("'/help' '/kick' '/stop'")
 
 
-# # echo
-# @dp.message_handler()
-# async def echo(message: types.Message):
-#     await message.answer(message.text)
+# echo
+@dp.message_handler()
+async def echo(message: types.Message):
+    await message.answer(message.text)
 
 # run long-polling
 if __name__ == "__main__":
