@@ -68,6 +68,14 @@ async def start_command(message: types.Message):
 async def echo(message: types.Message):
     await message.answer(message.text)
 
+
+# /solubility_table
+@dp.message_handler()
+async def echo(message: types.Message):
+    with open(r'tables/solubility_table.png') as solubility_table:
+        await message.reply_photo(solubility_table)
+
+
 # run long-polling
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
