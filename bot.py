@@ -74,6 +74,13 @@ async def echo(message: types.Message):
 async def echo(message: types.Message):
     with open(r'tables/solubility_table.png') as solubility_table:
         await message.reply_photo(solubility_table)
+  
+
+# /periodic_table
+@dp.message_handler()
+async def echo(message: types.Message):
+    with open(r'tables/periodic_table.png') as periodic_table:
+        await message.reply_photo(periodic_table)
 
 
 # run long-polling
