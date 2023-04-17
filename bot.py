@@ -44,42 +44,40 @@ async def kick_command(message: types.Message):
 @dp.message_handler(is_creator=True, commands=["stop"])
 async def stop_command(message: types.Message):
     await message.reply("Бот был остановлен")
-    log = open("log.txt", "a")
-    log.write("[" + str(time.ctime(time.time())) + "] bot has been stopped\n")
-    log.close()
-
+    with open("log.txt", "a") as log:
+        log.write("[" + str(time.ctime(time.time())) + "] bot has been stopped\n")
     exit()
 
 
 # /start
 @dp.message_handler(commands=["chemequation_bot", "start"], commands_prefix=["@", "/"])
 async def start_command(message: types.Message):
-    await message.answer('Hello')
+    await message.reply('Hello')
 
 
 # /help
 @dp.message_handler(commands=["help"])
 async def start_command(message: types.Message):
-    await message.answer("'/help' '/kick' '/stop'")
+    await message.reply("'/help' '/kick' '/stop'")
 
 
 # echo
-@dp.message_handler()
-async def echo(message: types.Message):
-    await message.answer(message.text)
+# @dp.message_handler()
+# async def echo(message: types.Message):
+#     await message.answer(message.text)
 
 
 # /solubility_table
-@dp.message_handler()
-async def echo(message: types.Message):
-    with open(r'tables/solubility_table.png') as solubility_table:
+@dp.message_handler(commands="solubility_table")
+async def solubility_table(message: types.Message):
+    with open('data/tables/solubility_table.png', mode='rb') as solubility_table:
         await message.reply_photo(solubility_table)
   
 
 # /periodic_table
-@dp.message_handler()
-async def echo(message: types.Message):
-    with open(r'tables/periodic_table.png') as periodic_table:
+@dp.message_handler(commands="periodic_table")
+async def periodic_table(message: types.Message):
+    with open('data/tables/periodic_table.png', mode='rb') as periodic_table:
         await message.reply_photo(periodic_table)
 
 
