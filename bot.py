@@ -51,8 +51,18 @@ async def stop_command(message: types.Message):
 
 # /start
 @dp.message_handler(commands=["chemequation_bot", "start"], commands_prefix=["@", "/"])
-async def start_command(message: types.Message):
-    await message.reply('Hello')
+async def send_welcome(message: types.Message):
+    kb = [
+        [
+            types.KeyboardButton(text="Помощь"),
+            types.KeyboardButton(text="Переодическая таблица"),
+            types.KeyboardButton(text="Таблица растворимости"),
+            types.KeyboardButton(text="Остановить")
+        ],
+    ]
+    keyboard = types.ReplyKeyboardMarkup(keyboard=kb)
+
+    await message.reply("Привет!", reply_markup=keyboard)
 
 
 # /help
@@ -70,15 +80,15 @@ async def start_command(message: types.Message):
 # /solubility_table
 @dp.message_handler(commands="solubility_table")
 async def solubility_table(message: types.Message):
-    with open('data/tables/solubility_table.png', mode='rb') as solubility_table:
-        await message.reply_photo(solubility_table)
+    with open('data/tables/solubility_table.png', mode='rb') as ssolubility_table:
+        await message.reply_photo(ssolubility_table)
   
 
 # /periodic_table
 @dp.message_handler(commands="periodic_table")
 async def periodic_table(message: types.Message):
-    with open('data/tables/periodic_table.png', mode='rb') as periodic_table:
-        await message.reply_photo(periodic_table)
+    with open('data/tables/periodic_table.png', mode='rb') as pperiodic_table:
+        await message.reply_photo(pperiodic_table)
 
 
 # run long-polling
