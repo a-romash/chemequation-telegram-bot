@@ -20,6 +20,15 @@ dp = Dispatcher(bot)
 dp.filters_factory.bind(IsAdminFilter)
 dp.filters_factory.bind(IsCreatorFilter)
 
+# create buttons of menu
+button_help = types.KeyboardButton(text="/help"),
+button_table_1 = types.KeyboardButton(text="/periodic_table"),
+button_table_2 = types.KeyboardButton(text="/solubility_table"),
+button_stop = types.KeyboardButton(text="/stop")
+
+keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+keyboard.add(button_help).add(button_stop).add(button_table_1).add(button_table_2)
+
 
 # /kick
 @dp.message_handler(is_admin=True, commands=["kick"])
@@ -52,17 +61,7 @@ async def stop_command(message: types.Message):
 # /start
 @dp.message_handler(commands=["chemequation_bot", "start"], commands_prefix=["@", "/"])
 async def send_welcome(message: types.Message):
-    kb = [
-        [
-            types.KeyboardButton(text="Помощь"),
-            types.KeyboardButton(text="Переодическая таблица"),
-            types.KeyboardButton(text="Таблица растворимости"),
-            types.KeyboardButton(text="Остановить")
-        ],
-    ]
-    keyboard = types.ReplyKeyboardMarkup(keyboard=kb)
-
-    await message.reply("Привет!", reply_markup=keyboard)
+    await message.reply("Привет! Это бот, который поможет тебе решать химические уравнения", reply_markup=keyboard)
 
 
 # /help
@@ -78,14 +77,14 @@ async def start_command(message: types.Message):
 
 
 # /solubility_table
-@dp.message_handler(commands="solubility_table")
+@dp.message_handler(commands="/solubility_table")
 async def solubility_table(message: types.Message):
     with open('data/tables/solubility_table.png', mode='rb') as ssolubility_table:
         await message.reply_photo(ssolubility_table)
   
 
 # /periodic_table
-@dp.message_handler(commands="periodic_table")
+@dp.message_handler(commands="/periodic_table")
 async def periodic_table(message: types.Message):
     with open('data/tables/periodic_table.png', mode='rb') as pperiodic_table:
         await message.reply_photo(pperiodic_table)
