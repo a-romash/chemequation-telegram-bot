@@ -6,8 +6,8 @@ import config
 import logging
 
 from aiogram import Bot, Dispatcher, executor, types
-
 from filters import IsAdminFilter, IsCreatorFilter
+from algorithm import get_coef
 
 # log level
 logging.basicConfig(level=logging.INFO)
@@ -22,7 +22,8 @@ dp.filters_factory.bind(IsCreatorFilter)
 
 # create buttons of menu
 buttons = [types.KeyboardButton(text="/help"), types.KeyboardButton(text="/periodic_table"),
-           types.KeyboardButton(text="/solubility_table"), types.KeyboardButton(text="/commands")]
+           types.KeyboardButton(text="/solubility_table"), types.KeyboardButton(text="/get_coef"),
+           types.KeyboardButton(text="/commands")]
 
 # [types.BotCommand("/help", "выводит хелпу"),
 #            types.BotCommand("/periodic_table", "показывает таблицу Менделеева"),
@@ -69,13 +70,30 @@ async def send_welcome(message: types.Message):
 # /start
 @dp.message_handler(commands=["chemequation_bot", "start"], commands_prefix=["@", "/"])
 async def send_welcome(message: types.Message):
-    await message.reply("Привет! Это бот, который поможет тебе решать химические уравнения", reply_markup=keyboard)
+    await message.reply("Привет! Я бот, который поможет тебе решать химические уравнения", reply_markup=keyboard)
 
 
 # /help
 @dp.message_handler(commands=["help"])
 async def start_command(message: types.Message):
-    await message.reply("'/help' '/kick' '/stop'", reply_markup=keyboard)
+    await message.reply("'/help' '/kick' '/stop'\n\n"
+                        "1) Вводите все элементы так, как они написаны в таблице Менделеева\n"
+                        "2) Используйте латинские буквы\n"
+                        "3) НЕ используйте пробелы\n"
+                        "4) Все элементы вводите ровно так, как они записаны в таблице Менделеева, "
+                        "без изменений кегля букв\n"
+                        "Примеры ввода:\n"
+                        "/get_coef Ca(OH)2+H3PO4=Ca3(PO4)2+H2O", reply_markup=keyboard)
+
+
+@dp.message_handler(commands=["get_coef"])
+async def get_coefficient(message: types.Message):
+    try:
+        args = message.text.split()[1].split('=')
+
+        await message.reply("Чекай, я расставил коэффициенты:\n{}".format(get_coef(args[0], args[1])))
+    except IndexError:
+        await message.reply("А где уравнения собственно говоря?")
 
 
 # echo
