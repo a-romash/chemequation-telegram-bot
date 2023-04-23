@@ -21,13 +21,16 @@ dp.filters_factory.bind(IsAdminFilter)
 dp.filters_factory.bind(IsCreatorFilter)
 
 # create buttons of menu
-button_help = types.KeyboardButton(text="/help"),
-button_table_1 = types.KeyboardButton(text="/periodic_table"),
-button_table_2 = types.KeyboardButton(text="/solubility_table"),
-button_stop = types.KeyboardButton(text="/stop")
+buttons = [types.KeyboardButton(text="/help"), types.KeyboardButton(text="/periodic_table"),
+           types.KeyboardButton(text="/solubility_table"), types.KeyboardButton(text="/commands")]
+
+# [types.BotCommand("/help", "выводит хелпу"),
+#            types.BotCommand("/periodic_table", "показывает таблицу Менделеева"),
+#            types.BotCommand("/solubility_table", "показывает таблицу растворимостей"),
+#            types.BotCommand("/commands", "показывает все команды")]
 
 keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-keyboard.add(button_help).add(button_stop).add(button_table_1).add(button_table_2)
+keyboard.add(*buttons)
 
 
 # /kick
@@ -58,6 +61,11 @@ async def stop_command(message: types.Message):
     exit()
 
 
+@dp.message_handler(commands=["commands"], commands_prefix=["/"])
+async def send_welcome(message: types.Message):
+    await message.reply("Лови", reply_markup=keyboard)
+
+
 # /start
 @dp.message_handler(commands=["chemequation_bot", "start"], commands_prefix=["@", "/"])
 async def send_welcome(message: types.Message):
@@ -67,7 +75,7 @@ async def send_welcome(message: types.Message):
 # /help
 @dp.message_handler(commands=["help"])
 async def start_command(message: types.Message):
-    await message.reply("'/help' '/kick' '/stop'")
+    await message.reply("'/help' '/kick' '/stop'", reply_markup=keyboard)
 
 
 # echo
@@ -77,17 +85,17 @@ async def start_command(message: types.Message):
 
 
 # /solubility_table
-@dp.message_handler(commands="/solubility_table")
+@dp.message_handler(commands="solubility_table")
 async def solubility_table(message: types.Message):
-    with open('data/tables/solubility_table.png', mode='rb') as ssolubility_table:
-        await message.reply_photo(ssolubility_table)
-  
+    with open('data/tables/solubility_table.png', mode='rb') as solubility_table:
+        await message.reply_photo(solubility_table)
+
 
 # /periodic_table
-@dp.message_handler(commands="/periodic_table")
+@dp.message_handler(commands="periodic_table")
 async def periodic_table(message: types.Message):
-    with open('data/tables/periodic_table.png', mode='rb') as pperiodic_table:
-        await message.reply_photo(pperiodic_table)
+    with open('data/tables/periodic_table.png', mode='rb') as periodic_table:
+        await message.reply_photo(periodic_table)
 
 
 # run long-polling
