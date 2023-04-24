@@ -70,7 +70,8 @@ async def send_welcome(message: types.Message):
 # /start
 @dp.message_handler(commands=["chemequation_bot", "start"], commands_prefix=["@", "/"])
 async def send_welcome(message: types.Message):
-    await message.reply("Привет! Я бот, который поможет тебе решать химические уравнения", reply_markup=keyboard)
+    await message.reply("Привет! Я бот, который поможет тебе решать химические уравнения. "
+                        "Для подробной информации моей работы введи /help", reply_markup=keyboard)
 
 
 # /help
